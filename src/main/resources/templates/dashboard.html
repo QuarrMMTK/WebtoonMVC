@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="/assets/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="/assets/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="/assets/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="/assets/css/style.css" rel="stylesheet">
+
+</head>
+<body>
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="index.html" class="logo d-flex align-items-center">
+            <img src="/assets/img/logo.png" alt="">
+            <span class="d-none d-lg-block">Webtoon - Hub</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+    <div class="search-bar">
+        <form class="search-form d-flex align-items-center" method="POST" action="#">
+            <input type="text" name="query" placeholder="Search" title="Enter search keyword">
+            <button type="submit" title="Search"><i class="bi bi-search"></i></button>
+        </form>
+    </div><!-- End Search Bar -->
+
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+
+            <li class="nav-item d-block d-lg-none">
+                <a class="nav-link nav-icon search-bar-toggle " href="#">
+                    <i class="bi bi-search"></i>
+                </a>
+            </li><!-- End Search Icon-->
+
+            <li class="nav-item pe-4">
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#">
+                    <!-- Use the profilePicturePath from the user object to show the profile image -->
+                    <img class="rounded-circle me-3" height="50px" width="50px"
+                         th:src="@{${user.profilePhoto}}" alt="profile">
+                    <span class="d-none d-md-block ps-2" th:text="${user.email}"></span>
+                    <!-- Access the user's email directly from the 'user' object -->
+                </a>
+            </li>
+
+        </ul>
+    </nav><!-- End Icons Navigation -->
+
+</header><!-- End Header -->
+
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+        <li class="nav-item">
+            <a class="nav-link" th:href="@{/dashboard}">
+                <i class="bi bi-grid"></i>
+                <span>Dashboard</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+
+        <!-- Webtoons Management Dropdown -->
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#webtoons-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-journal"></i>
+                <span>Webtoons</span>
+                <i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="webtoons-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="webtoon-list.html">
+                        <i class="bi bi-circle"></i><span>All Webtoons</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="add-webtoon.html">
+                        <i class="bi bi-circle"></i><span>Add Webtoon</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="add-episode.html">
+                        <i class="bi bi-circle"></i><span>Add Episodes</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Webtoons Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#user-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-person"></i><span>User</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="user-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="user-list.html">
+                        <i class="bi bi-circle"></i><span>User-List</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="profile.html">
+                        <i class="bi bi-circle"></i><span>User-Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/user/add-user}">
+                        <i class="bi bi-circle"></i><span>Add-User</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Profile Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="contact.html">
+                <i class="bi bi-envelope"></i>
+                <span>Contact</span>
+            </a>
+        </li><!-- End Contact Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="faq.html">
+                <i class="bi bi-question-circle"></i>
+                <span>F.A.Q</span>
+            </a>
+        </li><!-- End F.A.Q Page Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" th:href="@{/logout}">
+                <i class="bi bi-box-arrow-in-right"></i>
+                <span>Logout</span>
+            </a>
+        </li><!-- End Login Page Nav -->
+
+    </ul>
+
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="admin.html">Home</a></li>
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <section class="section dashboard">
+        <div class="row">
+
+            <!-- Left side columns -->
+            <div class="col-lg-12">
+                <div class="row">
+
+                    <!-- Sales Card -->
+                    <div class="col-xxl-4 col-md-6">
+                        <div class="card info-card sales-card">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Webtoons <span>| Total</span></h5>
+
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-journal"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6><span class="text-success small pt-1 fw-bold"
+                                                  th:text="${webtoonCount}"></span></h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div><!-- End Sales Card -->
+
+                    <!-- Revenue Card -->
+                    <div class="col-xxl-4 col-md-6">
+                        <div class="card info-card revenue-card">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Episodes <span>| Totals</span></h5>
+
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-book-half"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6><span class="text-success small pt-1 fw-bold"
+                                                  th:text="${chapterCount}"></span></h6>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div><!-- End Revenue Card -->
+
+                    <!-- Customers Card -->
+                    <div class="col-xxl-4 col-xl-12">
+
+                        <div class="card info-card customers-card">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Users <span>| Total</span></h5>
+
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-people"></i>
+                                    </div>
+                                    <div class="ps-3">
+                                        <h6><span class="text-primary small pt-1 fw-bold" th:text="${userCount}"></span>
+                                        </h6>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div><!-- End Customers Card -->
+
+                    <section class="section">
+                        <div class="row">
+                            <div class="col-lg-12">
+
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Recently Uploaded</h5>
+                                        <!-- Table with stripped rows -->
+                                        <table class="table datatable">
+                                            <thead>
+                                            <tr>
+                                                <th>
+                                                    Name
+                                                </th>
+                                                <th>Episode Number</th>
+                                                <th>Status</th>
+                                                <th data-type="date" data-format="YYYY/DD/MM">Uploaded Date</th>
+                                                <th>Detail</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Unity Pugh</td>
+                                                <td>58</td>
+                                                <td>Ongoing</td>
+                                                <td>2005/02/11</td>
+                                                <td>
+                                                    <button type="button" class="btn btn-info"><a
+                                                            href="episode-list.html"><i class="bi bi-folder"></i></a>
+                                                    </button>
+                                                </td>
+                                            </tr>
+
+
+                                            </tbody>
+                                        </table>
+                                        <!-- End Table with stripped rows -->
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Vendor JS Files -->
+                    <script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
+                    <script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+                    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                    <script src="/assets/vendor/chart.js/chart.umd.js"></script>
+                    <script src="/assets/vendor/echarts/echarts.min.js"></script>
+                    <script src="/assets/vendor/quill/quill.js"></script>
+                    <script src="/assets/vendor/simple-datatables/simple-datatables.js"></script>
+                    <script src="/assets/vendor/tinymce/tinymce.min.js"></script>
+                    <script src="/assets/vendor/php-email-form/validate.js"></script>
+
+                    <!-- Template Main JS File -->
+                    <script src="/assets/js/main.js"></script>
+</body>
+</html>
