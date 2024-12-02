@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.*;
+import java.util.Optional;
 
 /**
  * Author : Min Myat Thu Kha
@@ -23,8 +24,7 @@ public interface WebtoonRepository extends JpaRepository<Webtoon, Long> {
     @Transactional
     @Query("UPDATE Webtoon w SET w = :webtoon WHERE w.id = :webtoonId")
     void editWebtoon(@Param("webtoonId") long webtoonId, @Param("webtoon") Webtoon webtoon);
-
-    Page<Webtoon> findAllByOrderByCreationDateDesc(Pageable pageable);
-    @Query("SELECT w FROM Webtoon w ORDER BY w.creationDate DESC")
+    @Query("SELECT w FROM Webtoon w")
     Page<Webtoon> findAllWebtoons(Pageable pageable); // Custom query
+    Optional<Webtoon> findByTitle(String webtoonName);
 }

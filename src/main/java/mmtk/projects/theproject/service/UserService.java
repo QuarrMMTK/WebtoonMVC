@@ -1,17 +1,22 @@
 package mmtk.projects.theproject.service;
 
 import lombok.RequiredArgsConstructor;
-import mmtk.projects.webtoonmvc.dto.UserRegistrationDto;
+import mmtk.projects.theproject.dto.CreateUserDto;
+import mmtk.projects.theproject.dto.UserRegistrationDto;
 import mmtk.projects.theproject.model.Role;
 import mmtk.projects.theproject.model.User;
 import mmtk.projects.theproject.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -32,10 +37,11 @@ public class UserService {
         // Create a new User object
         User newUser = new User();
         newUser.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        newUser.setCreatedAt(new Date(System.currentTimeMillis()));
+        newUser.setCreatedAt(new Date());
         newUser.setEmail(userDto.getEmail());
         newUser.setFirstName(userDto.getFirstName());
         newUser.setLastName(userDto.getLastName());
+
         newUser.setRole(Role.ADMIN);
         if (photoName != null && !photoName.isEmpty()) {
             newUser.setProfilePhoto(photoName);
@@ -58,6 +64,7 @@ public class UserService {
     public Optional<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
     public String getCurrentUserName() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication.getPrincipal());
@@ -74,5 +81,61 @@ public class UserService {
             return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User is not registered"));
         }
         return null;
+    }
+    public Page<User> getPaginatedUsers(int page, int pageSize) {
+        return userRepository.findAll(PageRequest.of(page, pageSize));
+    }
+
+    public void createNewUser(CreateUserDto createUserDto, String fileName) {
+        User user = new User();
+        user.setFirstName(createUserDto.getFirstName());
+        user.setLastName(createUserDto.getLastName());
+        user.setCreatedAt(new Date());
+        user.setEmail(createUserDto.getEmail());
+        user.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
+        user.setProfilePhoto(fileName); // Assuming fileName is saved earlier
+        user.setRole(Role.valueOf(createUserDto.getRole()));
+        userRepository.save(user);
+    }
+
+    public User findUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+    }
+
+    public void updateUserProfile(Long id,User user, String fileName) {
+        User existingUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+        System.out.println("Service Method : " + existingUser);
+        if (!fileName.isEmpty()) {
+            existingUser.setProfilePhoto(fileName);
+            existingUser.setCreatedAt(new Date());
+            existingUser.setEmail(user.getEmail());
+            existingUser.setFirstName(user.getFirstName());
+            existingUser.setLastName(user.getLastName());
+            userRepository.save(existingUser);
+            System.out.println("Service Method With Image: " + existingUser);
+        }else {
+            existingUser.setCreatedAt(new Date());
+            existingUser.setEmail(user.getEmail());
+            existingUser.setFirstName(user.getFirstName());
+            existingUser.setLastName(user.getLastName());
+            System.out.println(existingUser);
+            userRepository.save(existingUser);
+            System.out.println("Service Method Without Image: " + existingUser);
+        }
+
+    }
+
+    public boolean validateCurrentPassword(User currentUser, String currentPassword) {
+        return passwordEncoder.matches(currentPassword, currentUser.getPassword());
+    }
+
+    public void updatePassword(User currentUser, String newPassword) {
+        currentUser.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(currentUser);
+    }
+
+    public void deleteUserById(Long id) {
+        userRepository.deleteById(id);
     }
 }

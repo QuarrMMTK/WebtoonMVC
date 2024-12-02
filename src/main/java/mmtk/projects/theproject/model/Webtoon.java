@@ -1,22 +1,13 @@
 package mmtk.projects.theproject.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.*;
 
-import java.time.LocalDateTime;
+
 import java.util.List;
 
-/**
- * Author : Min Myat Thu Kha
- * Created At : 05/11/2024, Nov ,11, 20
- * Project Name : WebtoonMVC
- **/
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -30,13 +21,23 @@ public class Webtoon {
     private String synopsis;
     private String Author;
     private String coverImage;
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
-    @OneToMany(mappedBy = "webtoon")
+    // No cascade for @ManyToMany relationship, as we don't want to delete related Genre entities
+    @ManyToMany
+    @JoinTable(
+            name = "webtoon_genre", // Name of the join table
+            joinColumns = @JoinColumn(name = "webtoon_id"), // Foreign key for Webtoon
+            inverseJoinColumns = @JoinColumn(name = "genre_id")// Foreign key for Genre
+    )
+    private List<Genre> genres;
+
+    // CascadeType.REMOVE for @OneToMany, so that related Chapter entities are deleted when Webtoon is deleted
+    @OneToMany(mappedBy = "webtoon", cascade = CascadeType.REMOVE)
     private List<Chapter> chapters;
 
-    @CreatedDate
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime creationDate;
-    @LastModifiedDate
-    private LocalDateTime modificationDate;
+    public String getCoverPhoto(){
+        return "webtoon/" + coverImage;
+    }
 }

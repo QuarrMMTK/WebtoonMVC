@@ -22,48 +22,55 @@ public class FileUploadUtil {
     private static final Logger logger = LoggerFactory.getLogger(FileUploadUtil.class);
 
     /**
-     * Saves the uploaded file to the specified directory.
+     * Saves the uploaded file to the specified directory and returns the saved file path.
      *
      * @param uploadDir The directory where the file should be saved.
-     * @param fileName The name of the file to be saved.
-     * @param file The file to be uploaded.
+     * @param fileName  The name of the file to be saved.
+     * @param file      The file to be uploaded.
+     * @return The path of the saved file as a string.
      * @throws IOException If an error occurs while saving the file.
      */
-    public static void saveFile(String uploadDir, String fileName, MultipartFile file) throws IOException {
-        // Sanitize the file name to avoid malicious characters
+    public static String saveFile(String uploadDir, String fileName, MultipartFile file) throws IOException {
+        // Check if the file is empty
+        if (file.isEmpty()) {
+            logger.warn("Attempted to save an empty file: {}", fileName);
+            throw new IOException("Cannot save empty file: " + fileName);
+        }
+
+        // Sanitize the file name
         fileName = sanitizeFileName(fileName);
 
-        // Create upload directory if it doesn't exist
+        // Create the upload directory if it doesn't exist
         Path uploadPath = Paths.get(uploadDir);
-        Files.createDirectories(uploadPath);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+            logger.info("Created upload directory: {}", uploadPath);
+        }
 
         // Resolve the full path for the file to be saved
         Path filePath = uploadPath.resolve(fileName);
 
-        // Log file path and name
-        logger.info("Saving file to: {}", filePath);
+        // Log details about the file
+        logger.info("Saving file: {} (Size: {} bytes) to directory: {}", fileName, file.getSize(), uploadDir);
 
         try (InputStream in = file.getInputStream()) {
             // Copy the file content to the destination path
             Files.copy(in, filePath, StandardCopyOption.REPLACE_EXISTING);
-            logger.info("File saved successfully: {}", filePath);
+            logger.info("File saved successfully at: {}", filePath);
+            return filePath.toString();
         } catch (IOException e) {
-            // Log and throw an IOException with context
-            logger.error("Could not save file: {} to directory: {}", fileName, uploadDir, e);
-            throw new IOException("Could not save image file " + fileName, e);
+            logger.error("Failed to save file: {} to directory: {}", fileName, uploadDir, e);
+            throw new IOException("Could not save file: " + fileName + " to directory: " + uploadDir, e);
         }
     }
 
     /**
      * Sanitizes the file name by removing invalid characters.
-     * This helps prevent directory traversal and ensures safe file names.
      *
      * @param fileName The original file name.
      * @return The sanitized file name.
      */
     public static String sanitizeFileName(String fileName) {
-        // Remove any characters that could cause issues with the file system
-        // For example, remove any non-alphanumeric characters (except hyphen and period)
-        return fileName.replaceAll("[^a-zA-Z0-9.-]", "_");
+        return fileName.replaceAll("[^a-zA-Z0-9-]", "_");
     }
 }

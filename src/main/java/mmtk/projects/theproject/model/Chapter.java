@@ -25,15 +25,9 @@ public class Chapter {
     @Id
     @GeneratedValue
     private Long id;
-    private String chapter;
-
+    private String name;
+    private String path;
     @ManyToOne
     @JoinColumn(name = "webtoon_id")
     private Webtoon webtoon;
-
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 }

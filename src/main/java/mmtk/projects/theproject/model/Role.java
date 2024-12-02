@@ -8,5 +8,6 @@ package mmtk.projects.theproject.model;
 public enum Role {
     USER,
     ADMIN,
-    MODERATOR
+    MODERATOR,
+    UPLOADER
 }

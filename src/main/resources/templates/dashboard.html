@@ -8,11 +8,6 @@
     <meta content="" name="description">
     <meta content="" name="keywords">
 
-    <!-- Google Fonts -->
-    <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-          rel="stylesheet">
-
     <!-- Vendor CSS Files -->
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
@@ -23,6 +18,11 @@
     <link href="/assets/vendor/simple-datatables/style.css" rel="stylesheet">
 
     <!-- Template Main CSS File -->
+    <link href="/assets/css/style.css" rel="stylesheet"> <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+          rel="stylesheet">
+    <!-- Template Main CSS File -->
     <link href="/assets/css/style.css" rel="stylesheet">
 
 </head>
@@ -32,7 +32,7 @@
 
     <div class="d-flex align-items-center justify-content-between">
         <a href="index.html" class="logo d-flex align-items-center">
-            <img src="/assets/img/logo.png" alt="">
+            <img src="/img/logo.png" alt="">
             <span class="d-none d-lg-block">Webtoon - Hub</span>
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -91,18 +91,13 @@
             </a>
             <ul id="webtoons-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="webtoon-list.html">
+                    <a th:href="@{/webtoon/webtoon-list}">
                         <i class="bi bi-circle"></i><span>All Webtoons</span>
                     </a>
                 </li>
                 <li>
-                    <a href="add-webtoon.html">
+                    <a th:href="@{/webtoon/add-webtoon}">
                         <i class="bi bi-circle"></i><span>Add Webtoon</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="add-episode.html">
-                        <i class="bi bi-circle"></i><span>Add Episodes</span>
                     </a>
                 </li>
             </ul>
@@ -114,12 +109,12 @@
             </a>
             <ul id="user-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="user-list.html">
+                    <a th:href="@{/user/user-list}">
                         <i class="bi bi-circle"></i><span>User-List</span>
                     </a>
                 </li>
                 <li>
-                    <a href="profile.html">
+                    <a th:href="@{/user/profile/{id}(id=${user.id})}">
                         <i class="bi bi-circle"></i><span>User-Profile</span>
                     </a>
                 </li>
@@ -132,14 +127,14 @@
         </li><!-- End Profile Page Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="contact.html">
+            <a class="nav-link collapsed" th:href="@{/contact}">
                 <i class="bi bi-envelope"></i>
                 <span>Contact</span>
             </a>
         </li><!-- End Contact Page Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="faq.html">
+            <a class="nav-link collapsed" th:href="@{/faq}">
                 <i class="bi bi-question-circle"></i>
                 <span>F.A.Q</span>
             </a>
@@ -162,7 +157,7 @@
         <h1>Dashboard</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="admin.html">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{dashboard}">Home</a></li>
                 <li class="breadcrumb-item active">Dashboard</li>
             </ol>
         </nav>
@@ -240,6 +235,10 @@
                         </div>
 
                     </div><!-- End Customers Card -->
+                </div>
+            </div>
+        </div>
+    </section>
 
                     <section class="section">
                         <div class="row">
@@ -518,18 +517,18 @@
                         </div>
                     </section>
 
-                    <!-- Vendor JS Files -->
-                    <script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
-                    <script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
-                    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-                    <script src="/assets/vendor/chart.js/chart.umd.js"></script>
-                    <script src="/assets/vendor/echarts/echarts.min.js"></script>
-                    <script src="/assets/vendor/quill/quill.js"></script>
-                    <script src="/assets/vendor/simple-datatables/simple-datatables.js"></script>
-                    <script src="/assets/vendor/tinymce/tinymce.min.js"></script>
-                    <script src="/assets/vendor/php-email-form/validate.js"></script>
+    <!-- Vendor JS Files -->
+    <script src="/assets/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/vendor/chart.js/chart.umd.js"></script>
+    <script src="/assets/vendor/echarts/echarts.min.js"></script>
+    <script src="/assets/vendor/quill/quill.js"></script>
+    <script src="/assets/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="/assets/vendor/tinymce/tinymce.min.js"></script>
+    <script src="/assets/vendor/php-email-form/validate.js"></script>
 
-                    <!-- Template Main JS File -->
-                    <script src="/assets/js/main.js"></script>
+    <!-- Template Main JS File -->
+    <script src="/assets/js/main.js"></script>
+</main>
 </body>
 </html>

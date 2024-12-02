@@ -18,14 +18,18 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
-        exposeDirectory(registry);
+        // Map "/photos/profiles/**" to the physical directory "photos/profiles"
+        exposeDirectory("photos/profiles", registry);
+
+        // Map "/webtoon-covers/**" to the physical directory "webtoon/webtoon-covers"
+        exposeDirectory("webtoon/webtoon-covers", registry);
     }
 
-    private void exposeDirectory(ResourceHandlerRegistry registry) {
-        Path uploadDir = Paths.get("photos/profiles").toAbsolutePath().normalize(); // Normalize and convert to absolute path
+    private void exposeDirectory(String dirName, ResourceHandlerRegistry registry) {
+        Path uploadDir = Paths.get(dirName).toAbsolutePath().normalize(); // Get absolute path
         String uploadDirPath = uploadDir.toUri().toString(); // Convert to URI format
 
-        registry.addResourceHandler("/" + "photos/profiles" + "/**") // Map the URL path
+        registry.addResourceHandler("/" + dirName + "/**") // Map the URL path
                 .addResourceLocations(uploadDirPath); // Serve files from the directory
     }
 }

@@ -38,7 +38,7 @@ public class User {
     private Role role;
 
     @CreatedDate
-    @Column(updatable = false, nullable = false)
+    @Column(updatable = true, nullable = false)
     private Date createdAt;
 
     // If you need to return the full URL, use a service layer or controller for that
@@ -48,5 +48,9 @@ public class User {
         } else {
             return  "/photos/profiles/"+profilePhoto;  // Assuming files are stored in /uploads/profiles/
         }
+    }
+
+    public String getFullName(){
+        return firstName + " " + lastName;
     }
 }
