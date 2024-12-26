@@ -29,7 +29,9 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
                 .anyMatch(g -> g.getAuthority().equals("ROLE_ADMIN"));
         boolean hasUserRole = authentication.getAuthorities().stream()
                 .anyMatch(g -> g.getAuthority().equals("ROLE_USER"));
+
         System.out.println("Roles: " + authentication.getAuthorities().toString());
+
         if (hasAdminRole) {
             // Redirect to admin dashboard
             response.sendRedirect("/dashboard");

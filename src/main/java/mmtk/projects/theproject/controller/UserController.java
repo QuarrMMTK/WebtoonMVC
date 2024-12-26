@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -77,7 +78,6 @@ public class UserController {
 
             // Sanitize and clean the file name
             String fileName = StringUtils.cleanPath(Objects.requireNonNull(profilePicture.getOriginalFilename()));
-            fileName = FileUploadUtil.sanitizeFileName(fileName);
 
             // Create directories if not already present
             Path uploadPath = Paths.get(uploadDir);
@@ -109,4 +109,6 @@ public class UserController {
         }
         return "redirect:/login";
     }
+
+
 }

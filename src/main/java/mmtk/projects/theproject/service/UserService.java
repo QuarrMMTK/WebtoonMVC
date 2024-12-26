@@ -7,7 +7,9 @@ import mmtk.projects.theproject.model.Role;
 import mmtk.projects.theproject.model.User;
 import mmtk.projects.theproject.repository.UserRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -102,7 +104,6 @@ public class UserService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
-
     public void updateUserProfile(Long id,User user, String fileName) {
         User existingUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found with id: " + id));
         System.out.println("Service Method : " + existingUser);
@@ -125,17 +126,24 @@ public class UserService {
         }
 
     }
-
     public boolean validateCurrentPassword(User currentUser, String currentPassword) {
         return passwordEncoder.matches(currentPassword, currentUser.getPassword());
     }
-
     public void updatePassword(User currentUser, String newPassword) {
         currentUser.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(currentUser);
     }
-
     public void deleteUserById(Long id) {
         userRepository.deleteById(id);
+    }
+
+    public Page<User> search(String keyword, int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+        // If pageSize is default (10), return all results without pagination
+        if (page == 0 && pageSize == 10) {
+            List<User> users = userRepository.search(keyword);
+            return new PageImpl<>(users, pageable, users.size());
+        }
+        return userRepository.search(keyword, pageable);
     }
 }

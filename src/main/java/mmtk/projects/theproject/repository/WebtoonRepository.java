@@ -26,5 +26,7 @@ public interface WebtoonRepository extends JpaRepository<Webtoon, Long> {
     void editWebtoon(@Param("webtoonId") long webtoonId, @Param("webtoon") Webtoon webtoon);
     @Query("SELECT w FROM Webtoon w")
     Page<Webtoon> findAllWebtoons(Pageable pageable); // Custom query
-    Optional<Webtoon> findByTitle(String webtoonName);
+
+    @Query("SELECT w FROM Webtoon w WHERE LOWER(w.title) = LOWER(:title)")
+    Webtoon findByTitle(String webtoonName);
 }

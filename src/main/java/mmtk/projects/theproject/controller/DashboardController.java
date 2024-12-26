@@ -11,6 +11,7 @@ import mmtk.projects.theproject.util.FileUploadUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -41,41 +42,35 @@ public class DashboardController {
     private final ChapterService chapterService;
 
     @GetMapping("/dashboard")
-    public String goToDashboard(Model model) {
-        User user = userService.getCurrentUserProfile(); // PROFILE
-        Long webtoonCount = webtoonService.getWebtoonCount();
-        Long chapterCount = chapterService.getChapterCount();
-        Long userCount = userService.getUserCount();
-//      Send Attribute
-        System.out.println("Profile Photo URL: " + user.getProfilePhoto());
-        model.addAttribute("user", user);
-        model.addAttribute("webtoonCount", webtoonCount);
-        model.addAttribute("chapterCount", chapterCount);
-        model.addAttribute("userCount", userCount);
+    public String goToDashboard(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Authentication auth) {
+        // Send Attribute
+        System.out.println("Profile Photo URL: " + userService.getCurrentUserProfile());
+//        model.addAttribute("user", userService.getCurrentUserProfile());
+        model.addAttribute("webtoonCount", webtoonService.getWebtoonCount());
+        model.addAttribute("chapterCount", chapterService.getChapterCount());
+        model.addAttribute("userCount", userService.getUserCount());
+        model.addAttribute("webtoons", webtoonService.findAllWebtoons(page, size, auth));
+        model.addAttribute("page", page);  // Ensure 'page' is added to the model
         return "dashboard";
     }
+
 
     @GetMapping("/user/user-list")
     public String goToUserList(@RequestParam(value = "page", defaultValue = "0") int page, Model model) {
         int pageSize = 10;
         Page<User> userPage = userService.getPaginatedUsers(page, pageSize);
         model.addAttribute("userPage", userPage);
-        model.addAttribute("user", userService.getCurrentUserProfile());
+//        model.addAttribute("user", userService.getCurrentUserProfile());
         return "user-list";
     }
 
     @PostMapping("/user/add-user/new")
     public String addNewUser(@ModelAttribute("user") CreateUserDto createUserDto, @RequestParam("image") MultipartFile profilePicture, Model model) throws IOException {
-        User currentUser = userService.getCurrentUserProfile();
+//        User currentUser = userService.getCurrentUserProfile();
+
         if (profilePicture != null && !profilePicture.isEmpty()) {
-            // Define the upload directory relative to the project directory
             String uploadDir = "photos/profiles";
-
-            // Sanitize and clean the file name
             String fileName = StringUtils.cleanPath(Objects.requireNonNull(profilePicture.getOriginalFilename()));
-            fileName = FileUploadUtil.sanitizeFileName(fileName);
-
-            // Create directories if not already present
             Path uploadPath = Paths.get(uploadDir);
             Files.createDirectories(uploadPath);
 
@@ -86,8 +81,6 @@ public class DashboardController {
                 model.addAttribute("error", "Error uploading the profile picture. Please try again.");
                 return "redirect:/add-user";
             }
-
-            // Pass the file name to the user registration service
             userService.createNewUser(createUserDto, fileName);
         } else {
             userService.createNewUser(createUserDto, null); // Handle case with no profile picture
@@ -97,7 +90,7 @@ public class DashboardController {
 
     @GetMapping("/user/add-user")
     public String goToAddUser(Model model) {
-        model.addAttribute("user", userService.getCurrentUserProfile());
+//        model.addAttribute("user", userService.getCurrentUserProfile());
         model.addAttribute("createUserDto", new CreateUserDto());
         return "add-user";
     }
@@ -111,7 +104,7 @@ public class DashboardController {
     @GetMapping("/user/profile/{id}")
     public String viewUserProfile(@PathVariable Long id, Model model) {
         User user = userService.findUserById(id);
-        model.addAttribute("user" , userService.getCurrentUserProfile()); // Session User
+//        model.addAttribute("user", userService.getCurrentUserProfile()); // Session User
         model.addAttribute("currentUser", user); // For Showing User Info
         return "user-profile"; // The name of the Thymeleaf template for user profiles
     }
@@ -121,15 +114,14 @@ public class DashboardController {
                                     @RequestParam("profileImage") MultipartFile profileImage,
                                     RedirectAttributes redirectAttributes) {
         System.out.println(updatedUser);
-            User currentUser = userService.getCurrentUserProfile();
-            String fileName = "";
-            if (!profileImage.isEmpty()) {
-                String uploadDir = "photos/profiles";
-                fileName = StringUtils.cleanPath(Objects.requireNonNull(profileImage.getOriginalFilename()));
-                fileName = FileUploadUtil.sanitizeFileName(fileName);
-                Path uploadPath = Paths.get(uploadDir);
-                userService.updateUserProfile(currentUser.getId(), updatedUser, fileName);
-            }
+        User currentUser = userService.getCurrentUserProfile();
+        String fileName = "";
+        if (!profileImage.isEmpty()) {
+            String uploadDir = "photos/profiles";
+            fileName = StringUtils.cleanPath(Objects.requireNonNull(profileImage.getOriginalFilename()));
+            Path uploadPath = Paths.get(uploadDir);
+            userService.updateUserProfile(currentUser.getId(), updatedUser, fileName);
+        }
         System.out.println("updateUserProfile Controller : " + updatedUser);
         userService.updateUserProfile(currentUser.getId(), updatedUser, fileName);
         return "redirect:/dashboard";
@@ -160,22 +152,35 @@ public class DashboardController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "An error occurred while changing the password.");
         }
-
         return "redirect:/user/profile/" + (currentUser != null ? currentUser.getId() : ""); // Fallback if null
     }
 
 
     @GetMapping("/faq")
     public String goToFaq(Model model) {
-        model.addAttribute("user", userService.getCurrentUserProfile());
+//        model.addAttribute("user", userService.getCurrentUserProfile());
         return "faq";
     }
 
     @GetMapping("/contact")
     public String goToContact(Model model) {
-        model.addAttribute("user", userService.getCurrentUserProfile());
+//        model.addAttribute("user", userService.getCurrentUserProfile());
         return "contact";
     }
-
+    @GetMapping("/searchUser")
+    public String searchUsers(@RequestParam(required = false, defaultValue = "") String keyword,
+                              @RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "10") int pageSize,
+                              Model model) {
+        Page<User> userPage;
+        if (keyword.trim().isEmpty()) {
+            userPage = userService.getPaginatedUsers(page, pageSize);// Fetch all users with pagination if the keyword is empty
+        } else {
+            userPage = userService.search(keyword, page, pageSize);// Perform a search with the given keyword
+        }
+        model.addAttribute("userPage", userPage);
+        model.addAttribute("keyword", keyword); // Retain the keyword for the search bar
+        return "user-list";
+    }
 
 }

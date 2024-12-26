@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,8 +11,9 @@
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
-          rel="stylesheet">
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet">
 
     <!-- Vendor CSS Files -->
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -26,6 +28,7 @@
     <link href="/assets/css/style.css" rel="stylesheet">
 
 </head>
+
 <body>
 <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
@@ -58,8 +61,8 @@
             <li class="nav-item pe-4">
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#">
                     <!-- Use the profilePicturePath from the user object to show the profile image -->
-                    <img class="rounded-circle me-3" height="50px" width="50px"
-                         th:src="@{${user.profilePhoto}}" alt="profile">
+                    <img class="rounded-circle me-3" height="50px" width="50px" th:src="@{${user.profilePhoto}}"
+                         alt="profile">
                     <span class="d-none d-md-block ps-2" th:text="${user.email}"></span>
                     <!-- Access the user's email directly from the 'user' object -->
                 </a>
@@ -72,15 +75,14 @@
 
 <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
-
     <ul class="sidebar-nav" id="sidebar-nav">
-
         <li class="nav-item">
-            <a class="nav-link " th:href="@{/dashboard}">
+            <a class="nav-link" th:href="@{/dashboard}">
                 <i class="bi bi-grid"></i>
                 <span>Dashboard</span>
             </a>
-        </li><!-- End Dashboard Nav -->
+        </li>
+        <!-- End Dashboard Nav -->
         <!-- Webtoons Management Dropdown -->
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#webtoons-nav" data-bs-toggle="collapse" href="#">
@@ -106,12 +108,11 @@
                 </li>
             </ul>
         </li><!-- End Webtoons Nav -->
-
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#user-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-person"></i><span>User</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="user-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <ul id="user-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                 <li>
                     <a th:href="@{/user/user-list}">
                         <i class="bi bi-circle"></i><span>User-List</span>
@@ -128,134 +129,153 @@
                     </a>
                 </li>
             </ul>
-        </li><!-- End Profile Page Nav -->
+        </li>
+        <!-- End Profile Page Nav -->
 
         <li class="nav-item">
             <a class="nav-link collapsed" th:href="@{/contact}">
                 <i class="bi bi-envelope"></i>
                 <span>Contact</span>
             </a>
-        </li><!-- End Contact Page Nav -->
+        </li>
+        <!-- End Contact Page Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" th:href="@{faq}">
+            <a class="nav-link" th:href="@{/faq}">
                 <i class="bi bi-question-circle"></i>
                 <span>F.A.Q</span>
             </a>
-        </li><!-- End F.A.Q Page Nav -->
+        </li>
+        <!-- End F.A.Q Page Nav -->
 
         <li class="nav-item">
             <a class="nav-link collapsed" th:href="@{/logout}">
                 <i class="bi bi-box-arrow-in-right"></i>
                 <span>Logout</span>
             </a>
-        </li><!-- End Login Page Nav -->
-
+        </li>
+        <!-- End Login Page Nav -->
     </ul>
+</aside>
+<!-- End Sidebar-->
 
-</aside><!-- End Sidebar-->
 
 <main id="main" class="main">
-
     <div class="pagetitle">
-        <h1>Add New Webtoon</h1>
+        <h1>Webtoon Update</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/dashboard}">Home</a></li>
-                <li class="breadcrumb-item active"><a th:href="@{/webtoon/add-webtoon}">Add-Webtoon</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/dashboard}">Dashboard</a></li>
+                <li class="breadcrumb-item">
+                    <p th:text="${webtoon.title}"></p>
+                </li>
             </ol>
         </nav>
-    </div><!-- End Page Title -->
-
+    </div>
+    <!-- End Page Title -->
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
-
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Webtoon Form</h5>
+                        <h5 class="card-title">Webtoon Edit Form</h5>
 
-                        <form th:action="@{/webtoon/create}" method="post" th:object="${webtoon}" enctype="multipart/form-data">
-                            <div class="row mb-3">
+                        <!-- General Form Elements -->
+                        <form th:action="@{/webtoon/webtoon-update/{id}(id=${webtoon.id})}" method="POST" enctype="multipart/form-data">
+
+                        <div class="row mb-3">
                                 <label for="webtoon-title" class="col-sm-2 col-form-label">Webtoon Name</label>
                                 <div class="col-sm-10">
-                                    <input id="webtoon-title" type="text" class="form-control" th:field="*{title}">
+                                    <input id="webtoon-title" type="text" name="title" class="form-control"
+                                           th:value="${webtoon.title}" required/>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <label for="webtoon-author" class="col-sm-2 col-form-label">Author Name</label>
                                 <div class="col-sm-10">
-                                    <input id="webtoon-author" type="text" class="form-control" th:field="*{author}">
+                                    <input id="webtoon-author" type="text" name="author" class="form-control"
+                                           th:value="${webtoon.author}" required/>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
                                 <label for="formFile" class="col-sm-2 col-form-label">Thumbnail Image</label>
                                 <div class="col-sm-10">
-                                    <input class="form-control" type="file" id="formFile" name="image" required>
+                                    <input class="form-control" type="file" id="formFile" name="file"/>
                                 </div>
                             </div>
 
                             <div class="row mb-3">
-                                <label for="Plot" class="col-sm-2 col-form-label">Synopsis</label>
-                                <div class="col-sm-10">
-                                    <textarea id="Plot" class="form-control" style="height: 100px" th:field="*{synopsis}"></textarea>
+                                <label class="col-sm-2 col-form-label">Plot</label>
+                                <div class="col-lg-8">
+                                    <label>
+            <textarea
+                    name="synopsis"
+                    class="form-control"
+                    style="height: 200px; width: 100%;"
+                    required
+                    th:text="${webtoon.synopsis}">
+            </textarea>
+                                    </label>
                                 </div>
                             </div>
-
                             <fieldset class="row mb-3">
                                 <legend class="col-form-label col-sm-2 pt-0">Status</legend>
                                 <div class="col-sm-10">
+                                    <!-- Ongoing Status -->
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" th:field="*{status}" id="gridRadios1" value="ONGOING" checked>
+                                        <input class="form-check-input" type="radio" id="gridRadios1" name="status"
+                                               value="ONGOING" th:checked="${webtoon.status == 'ONGOING'}">
                                         <label class="form-check-label" for="gridRadios1">Ongoing</label>
                                     </div>
+
+                                    <!-- Coming Soon Status -->
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" th:field="*{status}" id="gridRadios2" value="COMING_SOON">
+                                        <input class="form-check-input" type="radio" id="gridRadios2" name="status"
+                                               value="COMING_SOON" th:checked="${webtoon.status == 'COMING_SOON'}">
                                         <label class="form-check-label" for="gridRadios2">Coming Soon</label>
                                     </div>
+
+                                    <!-- Cancelled Status -->
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" th:field="*{status}" id="gridRadios3" value="CANCELLED">
+                                        <input class="form-check-input" type="radio" id="gridRadios3" name="status"
+                                               value="CANCELLED" th:checked="${webtoon.status == 'CANCELLED'}">
                                         <label class="form-check-label" for="gridRadios3">Cancelled</label>
                                     </div>
+
+                                    <!-- Hiatus Status -->
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" th:field="*{status}" id="gridRadios4" value="HIATUS">
+                                        <input class="form-check-input" type="radio" id="gridRadios4" name="status"
+                                               value="HIATUS" th:checked="${webtoon.status == 'HIATUS'}">
                                         <label class="form-check-label" for="gridRadios4">Hiatus</label>
                                     </div>
+
+                                    <!-- Finished Status -->
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" th:field="*{status}" id="gridRadios5" value="FINISHED">
+                                        <input class="form-check-input" type="radio" id="gridRadios5" name="status"
+                                               value="FINISHED" th:checked="${webtoon.status == 'FINISHED'}">
                                         <label class="form-check-label" for="gridRadios5">Finished</label>
                                     </div>
                                 </div>
                             </fieldset>
 
                             <div class="row mb-3">
-                                <label class="col-sm-2 col-form-label">Genres</label>
-                                <div class="col-sm-10">
-                                    <label>
-                                        <select class="form-select" multiple th:field="*{genres}">
-                                            <option th:each="genre : ${allGenres}" th:value="${genre.id}" th:text="${genre.name}"></option>
-                                        </select>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
                                 <div class="col-sm-6">
-                                    <button type="submit" class="btn btn-primary">Submit Form</button>
+                                    <button type="submit" class="btn btn-primary">Update Webtoon</button>
                                 </div>
                             </div>
                         </form>
-
+                        <!-- End General Form Elements -->
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-</main><!-- End #main -->
+
+</main>
+<!-- End #main -->
 
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
@@ -269,7 +289,8 @@
         <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
         Designed by <a href="https://bootstrapmade.com/">Min Myat Thu Kha</a>
     </div>
-</footer><!-- End Footer -->
+</footer>
+<!-- End Footer -->
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
         class="bi bi-arrow-up-short"></i></a>
@@ -286,7 +307,6 @@
 
 <!-- Template Main JS File -->
 <script src="/assets/js/main.js"></script>
-
 </body>
 
 </html>

@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Admin Panel</title>
 
-    <meta content="" name="description" />
-    <meta content="" name="keywords" />
+    <meta content="" name="description"/>
+    <meta content="" name="keywords"/>
     <!-- Google Fonts -->
-    <link href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.gstatic.com" rel="preconnect"/>
     <link
             href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
             rel="stylesheet"
@@ -23,21 +23,21 @@
             href="/assets/vendor/bootstrap-icons/bootstrap-icons.css"
             rel="stylesheet"
     />
-    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
-    <link href="/assets/vendor/quill/quill.snow.css" rel="stylesheet" />
-    <link href="/assets/vendor/quill/quill.bubble.css" rel="stylesheet" />
-    <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet" />
-    <link href="/assets/vendor/simple-datatables/style.css" rel="stylesheet" />
+    <link href="/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet"/>
+    <link href="/assets/vendor/quill/quill.snow.css" rel="stylesheet"/>
+    <link href="/assets/vendor/quill/quill.bubble.css" rel="stylesheet"/>
+    <link href="/assets/vendor/remixicon/remixicon.css" rel="stylesheet"/>
+    <link href="/assets/vendor/simple-datatables/style.css" rel="stylesheet"/>
 
     <!-- Template Main CSS File -->
-    <link href="/assets/css/style.css" rel="stylesheet" />
+    <link href="/assets/css/style.css" rel="stylesheet"/>
 </head>
 <body>
 <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
         <a href="index.html" class="logo d-flex align-items-center">
-            <img src="/assets/img/logo.png" alt="" />
+            <img src="/assets/img/logo.png" alt=""/>
             <span class="d-none d-lg-block">Webtoon - Hub</span>
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -114,6 +114,11 @@
                 <li>
                     <a th:href="@{/webtoon/add-webtoon}">
                         <i class="bi bi-circle"></i><span>Add Webtoon</span>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/webtoon/add-genre}">
+                        <i class="bi bi-circle"></i><span>Add Genre</span>
                     </a>
                 </li>
             </ul>
@@ -201,12 +206,12 @@
                         <img th:src="@{${currentUser.profilePhoto}}" alt="Profile" class="rounded-circle">
                         <h2 th:text="${currentUser.getFullName()}"></h2>
                         <h3 th:text="${currentUser.role}"></h3>
-<!--                        <div class="social-links mt-2">-->
-<!--                            <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>-->
-<!--                            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>-->
-<!--                            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>-->
-<!--                            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>-->
-<!--                        </div>-->
+                        <!--                        <div class="social-links mt-2">-->
+                        <!--                            <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>-->
+                        <!--                            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>-->
+                        <!--                            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>-->
+                        <!--                            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>-->
+                        <!--                        </div>-->
                     </div>
                 </div>
 
@@ -220,15 +225,21 @@
                         <ul class="nav nav-tabs nav-tabs-bordered">
 
                             <li class="nav-item">
-                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">
+                                    Overview
+                                </button>
                             </li>
 
                             <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit
+                                    Profile
+                                </button>
                             </li>
 
                             <li class="nav-item">
-                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button>
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">
+                                    Change Password
+                                </button>
                             </li>
 
                         </ul>
@@ -257,7 +268,8 @@
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                                 <!-- Profile Edit Form -->
-                                <form th:action="@{/user/profile/update}" th:object="${user}" method="post" enctype="multipart/form-data">
+                                <form th:action="@{/user/profile/update}" th:object="${user}" method="post"
+                                      enctype="multipart/form-data">
                                     <div class="row mb-3">
                                         <label class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
                                         <div class="col-md-8 col-lg-9">
@@ -269,9 +281,12 @@
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label for="firstName" class="col-md-4 col-lg-3 col-form-label">First Name</label>
+                                        <label for="firstName" class="col-md-4 col-lg-3 col-form-label">First
+                                            Name</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <label for="firstName"></label><input th:field="*{firstName}" type="text" class="form-control" id="firstName" placeholder="First Name">
+                                            <label for="firstName"></label><input th:field="*{firstName}" type="text"
+                                                                                  class="form-control" id="firstName"
+                                                                                  placeholder="First Name">
 
                                         </div>
                                     </div>
@@ -279,14 +294,16 @@
                                     <div class="row mb-3">
                                         <label for="lastName" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input th:field="*{lastName}" type="text" class="form-control mt-2" id="lastName" placeholder="Last Name">
+                                            <input th:field="*{lastName}" type="text" class="form-control mt-2"
+                                                   id="lastName" placeholder="Last Name">
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
                                         <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input th:field="*{email}" type="email" class="form-control" id="email" placeholder="Enter Email Address">
+                                            <input th:field="*{email}" type="email" class="form-control" id="email"
+                                                   placeholder="Enter Email Address">
                                         </div>
                                     </div>
 
@@ -302,23 +319,29 @@
                                 <form th:action="@{/user/profile/change-password}" method="post">
 
                                     <div class="row mb-3">
-                                        <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+                                        <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Current
+                                            Password</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="currentPassword" type="password" class="form-control" id="currentPassword" placeholder="Enter current password" required>
+                                            <input name="currentPassword" type="password" class="form-control"
+                                                   id="currentPassword" placeholder="Enter current password" required>
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                                        <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New
+                                            Password</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="newPassword" type="password" class="form-control" id="newPassword" placeholder="Enter new password" required>
+                                            <input name="newPassword" type="password" class="form-control"
+                                                   id="newPassword" placeholder="Enter new password" required>
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
-                                        <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
+                                        <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New
+                                            Password</label>
                                         <div class="col-md-8 col-lg-9">
-                                            <input name="renewPassword" type="password" class="form-control" id="renewPassword" placeholder="Re-enter new password" required>
+                                            <input name="renewPassword" type="password" class="form-control"
+                                                   id="renewPassword" placeholder="Re-enter new password" required>
                                         </div>
                                     </div>
 

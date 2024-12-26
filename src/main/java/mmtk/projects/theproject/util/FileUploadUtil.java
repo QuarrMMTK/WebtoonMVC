@@ -37,9 +37,6 @@ public class FileUploadUtil {
             throw new IOException("Cannot save empty file: " + fileName);
         }
 
-        // Sanitize the file name
-        fileName = sanitizeFileName(fileName);
-
         // Create the upload directory if it doesn't exist
         Path uploadPath = Paths.get(uploadDir);
         if (!Files.exists(uploadPath)) {
@@ -62,15 +59,5 @@ public class FileUploadUtil {
             logger.error("Failed to save file: {} to directory: {}", fileName, uploadDir, e);
             throw new IOException("Could not save file: " + fileName + " to directory: " + uploadDir, e);
         }
-    }
-
-    /**
-     * Sanitizes the file name by removing invalid characters.
-     *
-     * @param fileName The original file name.
-     * @return The sanitized file name.
-     */
-    public static String sanitizeFileName(String fileName) {
-        return fileName.replaceAll("[^a-zA-Z0-9-]", "_");
     }
 }

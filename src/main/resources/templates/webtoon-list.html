@@ -99,6 +99,11 @@
             <i class="bi bi-circle"></i><span>Add Webtoon</span>
           </a>
         </li>
+        <li>
+          <a th:href="@{/webtoon/add-genre}">
+            <i class="bi bi-circle"></i><span>Add Genre</span>
+          </a>
+        </li>
       </ul>
     </li><!-- End Webtoons Nav -->
     <li class="nav-item">
@@ -176,51 +181,46 @@
   <section class="section">
     <div class="row align-items-top">
       <div class="col-lg-4" th:each="webtoon : ${webtoons}">
-        <div class="card" style="width: 18rem;height: 28rem;" >
-          <img th:src="@{${webtoon.coverImage}}" class="card-img-top" style="width: 18rem; height: 14rem" alt="...">
+        <div class="card" style="max-width: 20rem; height: auto; margin: 2rem;">
+          <img th:src="@{${webtoon.coverImage}}" class="card-img-top"
+               style="object-fit: contain; width: 100%; height: 14rem; margin-top: 0.5rem;" alt="Webtoon Cover">
+
           <div class="card-body">
-            <h5 class="card-title" th:text="${webtoon.title}">Card with an image on top</h5>
-            <!-- Add Button -->
-            <button type="button" class="btn btn-outline-success">
-              <a th:href="@{/webtoon/add-chapter/{id}(id=${webtoon.id})}">Add</a>
-            </button>
+            <!-- Title - Centered -->
+            <h6 class=" text-center" th:text="${webtoon.title}">Card with an image on top</h6>
 
-            <!-- Update Button -->
-            <button type="button" class="btn btn-outline-primary">
-              <a th:href="@{/webtoon/webtoon-update/{id}(id=${webtoon.id})}">Update</a>
-            </button>
+            <!-- Button Group -->
+            <div class="btn-group d-flex flex-column mt-3" role="group">
+              <!-- Add Button -->
+              <button type="button" class="btn btn-outline-success mb-2">
+                <a th:href="@{/webtoon/add-chapter/{id}(id=${webtoon.id})}" class="text-decoration-none">Add</a>
+              </button>
 
-            <!-- Delete Button (POST Form) -->
-            <form th:action="@{/webtoon/delete/{id}(id=${webtoon.id})}" method="post">
-              <button type="submit" class="btn btn-outline-danger">Delete</button>
-            </form>
-            <a class="btn btn-info" th:href="@{/webtoon/{title}/chapters(title=${webtoon.title})}">
-              <i class="bi bi-folder"></i>
-            </a>
+              <!-- Update Button -->
+              <button type="button" class="btn btn-outline-primary mb-2">
+                <a th:href="@{/webtoon/webtoon-update/{id}(id=${webtoon.id})}" class="text-decoration-none">Update</a>
+              </button>
+
+              <!-- Delete Button (POST Form) -->
+              <form th:action="@{/webtoon/delete/{id}(id=${webtoon.id})}" method="post" class="mb-2">
+                <button type="submit" class="btn btn-outline-danger w-100">Delete</button>
+              </form>
+              <!-- View Chapters Button -->
+              <a class="btn btn-info w-100" th:href="@{/webtoon/{title}(title=${#strings.replace(webtoon.title, ' ', '-')})}">
+                <i class="bi bi-folder"></i> View Chapters
+              </a>
+            </div>
           </div>
         </div>
       </div>
+    </div>
 
-    <div class="pagination">
+    <div class="pagination mt-3">
       <a th:href="@{/webtoon-list?page={page}(page=${currentPage - 1})}" th:if="${currentPage > 0}">&laquo; Previous</a>
       <a th:href="@{/webtoon-list?page={page}(page=${currentPage + 1})}" th:if="${currentPage < totalPages - 1}">Next &raquo;</a>
     </div>
-  </div>
-</section>
-  <!-- Centered Pagination -->
-  <nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-      <li class="page-item disabled">
-        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-      </li>
-      <li class="page-item"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item">
-        <a class="page-link" href="#">Next</a>
-      </li>
-    </ul>
-  </nav><!-- End Centered Pagination -->
+  </section>
+
 
 </main><!-- End #main -->
 

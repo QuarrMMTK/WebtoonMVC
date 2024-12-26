@@ -49,11 +49,13 @@ public class ChapterService {
         newChapter.setWebtoon(webtoon);
 // Set All Images In 1 Folder with ForEach Looping and Set File Names to count:
         String uploadDir = "";
+        String folderName = webtoon.getTitle().replace(" ", "-").toLowerCase();
+        String subFolderName = chapterName.replace(" ", "-").toLowerCase();
         int count = 1;
         for (MultipartFile file : files) {
             String fileName = count + "-optimized.jpg";
             count++;
-            uploadDir = "webtoon/webtoons/" + webtoon.getTitle() + "/" + chapterName + "/" + fileName;
+            uploadDir = "webtoon/webtoons/" + folderName + "/" + subFolderName + "/" + fileName;
             FileUploadUtil.saveFile(uploadDir, fileName, file);
         }
         // Save Only 1 Path For Whole Chapter

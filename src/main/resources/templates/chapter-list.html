@@ -100,6 +100,11 @@
             <i class="bi bi-circle"></i><span>Add Webtoon</span>
           </a>
         </li>
+        <li>
+          <a th:href="@{/webtoon/add-genre}">
+            <i class="bi bi-circle"></i><span>Add Genre</span>
+          </a>
+        </li>
       </ul>
     </li><!-- End Webtoons Nav -->
 
@@ -127,14 +132,14 @@
     </li><!-- End Profile Page Nav -->
 
     <li class="nav-item">
-      <a class="nav-link collapsed" th:href="@{contact}">
+      <a class="nav-link collapsed" th:href="@{/contact}">
         <i class="bi bi-envelope"></i>
         <span>Contact</span>
       </a>
     </li><!-- End Contact Page Nav -->
 
     <li class="nav-item">
-      <a class="nav-link collapsed" th:href="@{faq}">
+      <a class="nav-link collapsed" th:href="@{/faq}">
         <i class="bi bi-question-circle"></i>
         <span>F.A.Q</span>
       </a>
@@ -157,8 +162,8 @@
     <h1>Episode List</h1>
     <nav>
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a th:href="@{dashboard}">Home</a></li>
-        <li class="breadcrumb-item"><a th:href="@{chapter-list}" th:text="${webtoon.title}"></a></li>
+        <li class="breadcrumb-item"><a th:href="@{/dashboard}">Home</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/chapter-list}" th:text="${{webtoon.title}}"></a></li>
       </ol>
     </nav>
   </div><!-- End Page Title -->
